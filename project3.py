@@ -15,7 +15,7 @@ import json
 import sqlite3
 
 ## Your name:
-## The names of anyone you worked with on this project:
+## The names of anyone you worked with on this project: worked with daniel eilander  and mike kim 
 
 #####
 
@@ -190,15 +190,27 @@ joined_result=cur.fetchall()
 
 ## Use a set comprehension to get a set of all words (combinations of characters separated by whitespace) among the descriptions in the descriptions_fav_users list. Save the resulting set in a variable called description_words.
 
-description_words={y for x in descriptions_fav_users.split for y in x.split()}
+description_words={y for x in descriptions_fav_users for y in x.split()}
 
 ## Use a Counter in the collections library to find the most common character among all of the descriptions in the descriptions_fav_users list. Save that most common character in a variable called most_common_char. Break any tie alphabetically (but using a Counter will do a lot of work for you...).
-
+count=collections.Counter()
+for x in descriptions_fav_users:
+	for items in x:
+		count.update(items)
+most_common_char=count.most_common(1)[0][0]
 
 
 ## Putting it all together...
 # Write code to create a dictionary whose keys are Twitter screen names and whose associated values are lists of tweet texts that that user posted. You may need to make additional queries to your database! To do this, you can use, and must use at least one of: the DefaultDict container in the collections library, a dictionary comprehension, list comprehension(s). Y
 # You should save the final dictionary in a variable called twitter_info_diction.
+
+sql6=('SELECT Users.screen_name,Tweets.text FROM Users INNER JOIN Tweets On Users.user_id=Tweets.user_id')
+cur.execute(sql6)
+list_2=cur.fetchall()
+twitter_info_diction = collections.defaultdict(list)
+for k,v in list_2:
+	twitter_info_diction[k].append(v)
+twitter_info_diction=dict(twitter_info_diction)
 
 
 
